@@ -1,0 +1,33 @@
+{
+  "name": "octolens",
+  "version": "0.1.0",
+  "description": "Octolens",
+  "main": "main.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheplu/Octolens.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/sheplu/Octolens/issues"
+  },
+  "homepage": "https://github.com/sheplu/Octolens#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@eslint/markdown": "^7.1.0",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0"
+  },
+  "dependencies": {
+    "@sheplu/yagi": "^0.7.0"
+  }
+}
