@@ -28,6 +28,20 @@ npm install -g @sheplu/octolens
 npx @sheplu/octolens <command>
 ```
 
+## 🔧 Environment Variables
+
+OctoLens requires a GitHub token and the target organization to run.
+
+- **`ORGANISATION`** – The name of the GitHub organization to scan.
+- **`GITHUB_TOKEN`** – A valid GitHub Personal Access Token (classic or fine-grained) with `repo` and `read:org` permissions.
+
+**Example:**
+
+```bash
+export ORGANISATION=my-org
+export GITHUB_TOKEN=ghp_yourtokenhere
+```
+
 ## 🔍 Checks Performed
 
 - Branch Protection Rules – required reviews, status checks, force push restrictions.
