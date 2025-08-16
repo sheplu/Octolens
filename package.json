@@ -1,5 +1,5 @@
 {
-  "name": "octolens",
+  "name": "@sheplu/octolens",
   "version": "0.1.0",
   "description": "Octolens",
   "main": "main.js",
