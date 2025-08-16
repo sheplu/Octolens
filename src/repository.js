@@ -1,11 +1,12 @@
-import { getCodeowners, getDependabot, getRepositoryTeams } from "@sheplu/yagi";
+import { getCodeowners, getDependabot, getRepositoryTeams, listCollaborators } from "@sheplu/yagi";
 
 export async function computeRepository(owner, repository) {
 	let repositoryPromises = [];
 	repositoryPromises.push(
 		getRepositoryTeams(owner, repository),
 		getDependabot(owner, repository),
-		getCodeowners(owner, repository)
+		getCodeowners(owner, repository),
+		listCollaborators(owner, repository, 'direct'),
 	);
 
 	const data = await Promise.all(repositoryPromises);
@@ -14,5 +15,6 @@ export async function computeRepository(owner, repository) {
 		teams: data[0],
 		dependabot: data[1],
 		codeowners: data[2],
+		collaboratos: data[3],
 	}
 };
