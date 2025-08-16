@@ -5,8 +5,7 @@ import { computeRepository } from "./repository.js";
 export async function getRepositoriesFromOrganisation(organisation, path='repositories.json') {
 	const repositories = await listRepositories(organisation);
 	const cleanedRepositories = [];
-	const tmpRepo = repositories
-	for await (const repository of tmpRepo) {
+	for await (const repository of repositories) {
 		const fullRepository = await computeRepository(organisation, repository.name)
 		cleanedRepositories.push({ ...cleanRepositoryObject(repository), ...fullRepository});
 	}
