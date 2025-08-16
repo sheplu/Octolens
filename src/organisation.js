@@ -1,12 +1,16 @@
 import { listRepositories } from "@sheplu/yagi";
 import { writeFile } from "./io-file.js";
+import { computeRepository } from "./repository.js";
 
 export async function getRepositoriesFromOrganisation(organisation, path='repositories.json') {
 	const repositories = await listRepositories(organisation);
 	const cleanedRepositories = [];
-	for (const repository of repositories) {
-		cleanedRepositories.push(cleanRepositoryObject(repository));
+	const tmpRepo = repositories
+	for await (const repository of tmpRepo) {
+		const fullRepository = await computeRepository(organisation, repository.name)
+		cleanedRepositories.push({ ...cleanRepositoryObject(repository), ...fullRepository});
 	}
+
 	writeFile(path, JSON.stringify(cleanedRepositories));
 	return cleanedRepositories;
 };
