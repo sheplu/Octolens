@@ -23,7 +23,23 @@ jobs:
       - name: NPM install
         run: npm install
 
+      - name: Version
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          echo "VERSION=${VERSION:1}" >> $GITHUB_ENV
+
+      - name: Version npm
+        if: github.event_name == 'release' && github.event.action == 'created'
+        run: |
+          CURRENT_VERSION=$(npm pkg get version | tr -d '"')
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            npm version $VERSION --no-git-tag-version
+          else
+            echo "Version already set to $VERSION, skipping npm version command"
+          fi
+
       - name: publish
         env:
           NPM_TOKEN: ${{secrets.NPM_PUBLISH}}
-        run: rm -rf node-module	.editorconfig .github && npm publish --access public
+        run: rm -rf node-module	.editorconfig .github package-lock.json && npm publish --access public
