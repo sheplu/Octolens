@@ -37,6 +37,6 @@ function cleanRepositoryObject(repository) {
 		visibility: repository.visibility,
 		default_branch: repository.default_branch,
 		permissions: repository.permissions,
-		security_and_analysis: repository.security_and_analysis
+		security_and_analysis: repository.security_and_analysis,
 	};
 };
