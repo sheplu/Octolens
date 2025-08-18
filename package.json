@@ -25,12 +25,12 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@eslint/markdown": "^7.1.0",
-    "@sheplu/eslint-config": "^0.6.0",
+    "@sheplu/eslint-config": "^0.14.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "eslint": "^9.33.0",
     "globals": "^16.3.0"
   },
   "dependencies": {
-    "@sheplu/yagi": "^0.8.0"
+    "@sheplu/yagi": "^0.8.1"
   }
 }
