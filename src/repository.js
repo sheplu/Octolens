@@ -1,4 +1,11 @@
-import { getCodeowners, getDependabot, getRepositoryTeams, listCollaborators, getRepositoryLanguages, listTags } from "@sheplu/yagi";
+import {
+	getCodeowners,
+	getDependabot,
+	getRepositoryTeams,
+	listCollaborators,
+	getRepositoryLanguages,
+	listTags,
+} from "@sheplu/yagi";
 
 export async function computeRepository(owner, repository) {
 	let repositoryPromises = [];
