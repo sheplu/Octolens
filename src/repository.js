@@ -5,10 +5,11 @@ import {
 	listCollaborators,
 	getRepositoryLanguages,
 	listTags,
-} from "@sheplu/yagi";
+} from '@sheplu/yagi';
 
 export async function computeRepository(owner, repository) {
 	let repositoryPromises = [];
+
 	repositoryPromises.push(
 		getRepositoryTeams(owner, repository),
 		getDependabot(owner, repository),

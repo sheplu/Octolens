@@ -1,9 +1,9 @@
-import { writeFileSync } from "node:fs";
+import { writeFileSync } from 'node:fs';
 
 export function writeFile(path, data) {
 	try {
-		writeFileSync(path, data)
+		writeFileSync(path, data);
 	} catch (error) {
-		console.error(error)
+		console.error(error);
 	}
 };
