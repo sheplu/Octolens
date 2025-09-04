@@ -9,6 +9,7 @@ import {
 	listRepositoryEnvironments,
 	getRepositorySecrets,
 	listReleases,
+	listBranches,
 } from '@sheplu/yagi';
 
 export async function computeRepository(owner, repository) {
@@ -25,6 +26,7 @@ export async function computeRepository(owner, repository) {
 		listRepositoryEnvironments(owner, repository),
 		getRepositorySecrets(owner, repository),
 		listReleases(owner, repository),
+		listBranches(owner, repository),
 	);
 
 	const data = await Promise.all(repositoryPromises);
@@ -40,5 +42,6 @@ export async function computeRepository(owner, repository) {
 		environments: data[7],
 		secrets: data[8],
 		releases: data[9],
+		branches: data[10],
 	};
 };
