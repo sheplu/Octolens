@@ -10,9 +10,10 @@ import {
 	getRepositorySecrets,
 	listReleases,
 	listBranches,
+	getBranchProtection,
 } from '@sheplu/yagi';
 
-export async function computeRepository(owner, repository) {
+export async function computeRepository(owner, repository, default_branch) {
 	let repositoryPromises = [];
 
 	repositoryPromises.push(
@@ -27,6 +28,7 @@ export async function computeRepository(owner, repository) {
 		getRepositorySecrets(owner, repository),
 		listReleases(owner, repository),
 		listBranches(owner, repository),
+		getBranchProtection(owner, repository, default_branch),
 	);
 
 	const data = await Promise.all(repositoryPromises);
@@ -43,5 +45,6 @@ export async function computeRepository(owner, repository) {
 		secrets: data[8],
 		releases: data[9],
 		branches: data[10],
+		defaultBranchProtected: data[11],
 	};
 };
