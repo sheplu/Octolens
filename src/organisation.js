@@ -7,7 +7,11 @@ export async function getRepositoriesFromOrganisation(organisation, path = 'repo
 	const cleanedRepositories = [];
 
 	for await (const repository of repositories) {
-		const fullRepository = await computeRepository(organisation, repository.name);
+		const fullRepository = await computeRepository(
+			organisation,
+			repository.name,
+			repository.default_branch,
+		);
 
 		cleanedRepositories.push({ ...cleanRepositoryObject(repository), ...fullRepository });
 	}
