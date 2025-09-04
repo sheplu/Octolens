@@ -5,6 +5,7 @@ import {
 	listCollaborators,
 	getRepositoryLanguages,
 	listTags,
+	getTopics,
 } from '@sheplu/yagi';
 
 export async function computeRepository(owner, repository) {
@@ -17,6 +18,7 @@ export async function computeRepository(owner, repository) {
 		listCollaborators(owner, repository, 'direct'),
 		getRepositoryLanguages(owner, repository),
 		listTags(owner, repository),
+		getTopics(owner, repository),
 	);
 
 	const data = await Promise.all(repositoryPromises);
@@ -28,5 +30,6 @@ export async function computeRepository(owner, repository) {
 		collaborators: data[3],
 		languages: data[4],
 		tags: data[5],
+		topics: data[6],
 	};
 };
