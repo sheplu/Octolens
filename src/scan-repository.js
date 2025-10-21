@@ -18,49 +18,54 @@ import {
 	listTeams,
 } from '@sheplu/yagi/src/repositories/repositories.js';
 
-export async function scanRepository(owner, repository) {
+export async function scanRepository(owner, repository, secondaryData = false) {
 	let promises = [];
 	const fetchRepository = await getRepository(owner, repository);
+	let result = { ...fetchRepository };
 
-	promises.push(
-		getDependabot(owner, repository),
-		getTopics(owner, repository),
-		getVulnerabilityReporting(owner, repository),
-		listCodeownersErrors(owner, repository),
-		listLanguages(owner, repository),
-		listTags(owner, repository),
-		listTeams(owner, repository),
-		listCollaborators(owner, repository),
-		listReleases(owner, repository),
-		listBranches(owner, repository),
-		getBranchProtection(owner, repository, fetchRepository.default_branch),
-		getBranchProtectionAdmin(owner, repository, fetchRepository.default_branch),
-		getBranchProtectionPR(owner, repository, fetchRepository.default_branch),
-		listAlertsRepository(owner, repository),
-	);
+	if (secondaryData) {
+		promises.push(
+			getDependabot(owner, repository),
+			getTopics(owner, repository),
+			getVulnerabilityReporting(owner, repository),
+			listCodeownersErrors(owner, repository),
+			listLanguages(owner, repository),
+			listTags(owner, repository),
+			listTeams(owner, repository),
+			listCollaborators(owner, repository),
+			listReleases(owner, repository),
+			listBranches(owner, repository),
+			getBranchProtection(owner, repository, fetchRepository.default_branch),
+			getBranchProtectionAdmin(owner, repository, fetchRepository.default_branch),
+			getBranchProtectionPR(owner, repository, fetchRepository.default_branch),
+			listAlertsRepository(owner, repository),
+		);
 
-	const repo = await Promise.all(promises);
-	const additionalData = {
-		dependabot: repo[0],
-		topicsList: repo[1],
-		vulnerabilityReporting: repo[2],
-		codeownerErrors: repo[3],
-		languages: repo[4],
-		tags: repo[5],
-		teams: repo[6],
-		collaborators: repo[7],
-		releases: repo[8],
-		branches: repo[9],
-		protectionDefaultBranch: {
-			protection: repo[10],
-			protectionAdmin: repo[11],
-			protectionPR: repo[12],
-		},
-		dependabotAlerts: repo[13],
-	};
+		const repo = await Promise.all(promises);
+		const additionalData = {
+			dependabot: repo[0],
+			topicsList: repo[1],
+			vulnerabilityReporting: repo[2],
+			codeownerErrors: repo[3],
+			languages: repo[4],
+			tags: repo[5],
+			teams: repo[6],
+			collaborators: repo[7],
+			releases: repo[8],
+			branches: repo[9],
+			protectionDefaultBranch: {
+				protection: repo[10],
+				protectionAdmin: repo[11],
+				protectionPR: repo[12],
+			},
+			dependabotAlerts: repo[13],
+		};
 
-	return {
-		...fetchRepository,
-		...additionalData,
-	};
+		result = {
+			...result,
+			...additionalData,
+		};
+	}
+
+	return result;
 };
