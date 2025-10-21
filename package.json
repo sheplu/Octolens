@@ -23,14 +23,14 @@
   },
   "homepage": "https://github.com/sheplu/Octolens#readme",
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "@eslint/markdown": "^7.3.0",
-    "@sheplu/eslint-config": "^0.405.1",
-    "@stylistic/eslint-plugin": "^5.4.0",
-    "eslint": "^9.37.0",
+    "@eslint/js": "^9.38.0",
+    "@eslint/markdown": "^7.4.1",
+    "@sheplu/eslint-config": "^0.600.0",
+    "@stylistic/eslint-plugin": "^5.5.0",
+    "eslint": "^9.38.0",
     "globals": "^16.4.0"
   },
   "dependencies": {
-    "@sheplu/yagi": "^0.51.0"
+    "@sheplu/yagi": "^0.91.0"
   }
 }
