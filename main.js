@@ -1,7 +1,10 @@
-import { getRepositoriesFromOrganisation } from './src/organisation.js';
+import { scanRepository } from './src/scan-repository.js';
+import { writeFile } from './src/io-file.js';
 
 async function main() {
-	await getRepositoriesFromOrganisation(process.env.ORGANISATION);
+	const repo = await scanRepository('owner', 'repository');
+
+	writeFile('repository.json', JSON.stringify(repo));
 };
 
 main();
