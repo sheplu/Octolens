@@ -84,9 +84,9 @@ const schema = {
 		has_wiki: { 'type': 'boolean', 'const': true },
 		license: { 'const': null },
 		web_commit_signoff_required: { 'type': 'boolean', 'const': true },
-		visibility: { 'type': 'string', 'enum': [ 'privatea', 'internale' ] },
-		delete_branch_on_merge: { 'type': 'boolean', 'const': false },
-		allow_update_branch: { 'type': 'boolean', 'const': false },
+		visibility: { 'type': 'string', 'enum': [ 'private', 'internal' ] },
+		delete_branch_on_merge: { 'type': 'boolean', 'const': true },
+		allow_update_branch: { 'type': 'boolean', 'const': true },
 	},
 	required: [
 		'has_issues',
