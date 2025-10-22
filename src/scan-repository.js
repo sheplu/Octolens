@@ -17,6 +17,7 @@ import {
 	listTags,
 	listTeams,
 } from '@sheplu/yagi/src/repositories/repositories.js';
+import { Ajv } from 'ajv';
 
 export async function scanRepository(owner, repository, secondaryData = false) {
 	let promises = [];
@@ -69,3 +70,55 @@ export async function scanRepository(owner, repository, secondaryData = false) {
 
 	return result;
 };
+
+const ajv = new Ajv({
+	allErrors: true,
+	strict: true,
+	removeAdditional: 'all',
+});
+
+const schema = {
+	type: 'object',
+	properties: {
+		has_issues: { 'type': 'boolean', 'const': true },
+		has_wiki: { 'type': 'boolean', 'const': true },
+		license: { 'const': null },
+		web_commit_signoff_required: { 'type': 'boolean', 'const': true },
+		visibility: { 'type': 'string', 'enum': [ 'privatea', 'internale' ] },
+		delete_branch_on_merge: { 'type': 'boolean', 'const': false },
+		allow_update_branch: { 'type': 'boolean', 'const': false },
+	},
+	required: [
+		'has_issues',
+		'has_wiki',
+		'license',
+		'web_commit_signoff_required',
+		'visibility',
+		'delete_branch_on_merge',
+		'allow_update_branch',
+	],
+	additionalProperties: true,
+};
+
+const validate = ajv.compile(schema);
+
+export function assertCompliance(payload) {
+	const ok = validate(payload);
+	let err;
+
+	if (!ok) {
+		const errors = (validate.errors || []).map((e) => {
+			const path = e.instancePath || '(root)';
+
+			return `${path} ${e.message}`;
+		});
+
+		err = new Error('Validation failed');
+		err.details = errors;
+	};
+
+	return {
+		payload,
+		error: err,
+	};
+}
