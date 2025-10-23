@@ -87,6 +87,59 @@ const schema = {
 		visibility: { 'type': 'string', 'enum': [ 'private', 'internal' ] },
 		delete_branch_on_merge: { 'type': 'boolean', 'const': true },
 		allow_update_branch: { 'type': 'boolean', 'const': true },
+		description: { type: 'string', minLength: 1 },
+		default_branch: { type: 'string', not: { 'const': 'master' } },
+		dependabot: {
+			type: 'object',
+			properties: {
+				enabled: { 'type': 'boolean', 'const': true },
+				paused: { 'type': 'boolean', 'const': false },
+			},
+		},
+		security_and_analysis: {
+			type: 'object',
+			properties: {
+				dependabot_security_updates: {
+					type: 'object',
+					properties: {
+						status: {
+							'type': 'string',
+							'const': 'enabled',
+						},
+					},
+				},
+			},
+		},
+		codeownerErrors: {
+			type: 'object',
+			properties: {
+				status: {
+					type: 'string',
+					not: { 'const': '404' },
+				},
+			},
+		},
+		teams: {
+			type: 'array',
+			minLength: 3,
+			maxLength: 6,
+		},
+		collaborators: {
+			type: 'array',
+			maxLength: 3,
+		},
+		branches: {
+			type: 'array',
+			maxLength: 15,
+		},
+		dependabotAlerts: {
+			type: 'array',
+			maxLength: 5,
+		},
+		topics: {
+			type: 'array',
+			minLength: 1,
+		},
 	},
 	required: [
 		'has_issues',
@@ -96,6 +149,15 @@ const schema = {
 		'visibility',
 		'delete_branch_on_merge',
 		'allow_update_branch',
+		'description',
+		'default_branch',
+		'dependabot',
+		'security_and_analysis',
+		'codeownerErrors',
+		'teams',
+		'collaborators',
+		'branches',
+		'dependabotAlerts',
 	],
 	additionalProperties: true,
 };
