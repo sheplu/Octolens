@@ -1,6 +1,8 @@
+import { listRepositorySecrets } from '@sheplu/yagi/src/actions/secrets.js';
 import { listBranches } from '@sheplu/yagi/src/branches/branches.js';
 import { listCollaborators } from '@sheplu/yagi/src/collaborators/collaborators.js';
 import { listAlertsRepository } from '@sheplu/yagi/src/dependabot/alerts.js';
+import { listEnvironments } from '@sheplu/yagi/src/deployments/environments.js';
 import { listReleases } from '@sheplu/yagi/src/releases/releases.js';
 import {
 	getBranchProtection,
@@ -40,6 +42,8 @@ export async function scanRepository(owner, repository, secondaryData = false) {
 			getBranchProtectionAdmin(owner, repository, fetchRepository.default_branch),
 			getBranchProtectionPR(owner, repository, fetchRepository.default_branch),
 			listAlertsRepository(owner, repository),
+			listRepositorySecrets(owner, repository),
+			listEnvironments(owner, repository),
 		);
 
 		const repo = await Promise.all(promises);
@@ -60,6 +64,8 @@ export async function scanRepository(owner, repository, secondaryData = false) {
 				protectionPR: repo[12],
 			},
 			dependabotAlerts: repo[13],
+			secrets: repo[14],
+			environments: repo[15],
 		};
 
 		result = {
@@ -121,24 +127,33 @@ const schema = {
 		},
 		teams: {
 			type: 'array',
-			minLength: 3,
-			maxLength: 6,
+			minItems: 3,
+			maxItems: 6,
 		},
 		collaborators: {
 			type: 'array',
-			maxLength: 3,
+			maxItems: 3,
 		},
 		branches: {
 			type: 'array',
-			maxLength: 15,
+			maxItems: 15,
 		},
 		dependabotAlerts: {
 			type: 'array',
-			maxLength: 5,
+			maxItems: 5,
 		},
 		topics: {
 			type: 'array',
-			minLength: 1,
+			minItems: 1,
+		},
+		secrets: {
+			type: 'array',
+			maxItems: 5,
+		},
+		environments: {
+			type: 'array',
+			minItems: 3,
+			maxItems: 5,
 		},
 	},
 	required: [
@@ -158,6 +173,8 @@ const schema = {
 		'collaborators',
 		'branches',
 		'dependabotAlerts',
+		'secrets',
+		'environments',
 	],
 	additionalProperties: true,
 };
