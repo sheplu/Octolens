@@ -291,3 +291,27 @@ test('assertCompliance surfaces validation failures', () => {
 
 	assert.ok(error instanceof Error);
 });
+
+test('assertCompliance validates payload with custom schema', () => {
+	const customSchema = {
+		type: 'object',
+		properties: {
+			status: { type: 'string', const: 'ok' },
+		},
+		required: [ 'status' ],
+		additionalProperties: false,
+	};
+
+	const compliantPayload = { status: 'ok', ignored: 'value' };
+	const { error: okError, payload: okPayload } = assertCompliance(
+		compliantPayload,
+		customSchema,
+	);
+
+	assert.strictEqual(okError, undefined);
+	assert.deepStrictEqual(okPayload, { status: 'ok' });
+
+	const { error: failError } = assertCompliance({ status: 'fail' }, customSchema);
+
+	assert.ok(failError instanceof Error);
+});
