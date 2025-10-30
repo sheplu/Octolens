@@ -20,6 +20,11 @@ import {
 	listTeams,
 } from '@sheplu/yagi/src/repositories/repositories.js';
 import { Ajv } from 'ajv';
+import { readFileSync } from 'node:fs';
+
+const defaultComplianceSchema = JSON.parse(
+	readFileSync(new URL('./default-compliance-schema.json', import.meta.url), 'utf8'),
+);
 
 export async function scanRepository(owner, repository, secondaryData = false) {
 	let promises = [];
@@ -77,111 +82,15 @@ export async function scanRepository(owner, repository, secondaryData = false) {
 	return result;
 };
 
-const ajv = new Ajv({
-	allErrors: true,
-	strict: true,
-	removeAdditional: 'all',
-});
+export function assertCompliance(payload, complianceSchema = defaultComplianceSchema) {
+	const ajv = new Ajv({
+		allErrors: true,
+		strict: true,
+		removeAdditional: 'all',
+	});
 
-const schema = {
-	type: 'object',
-	properties: {
-		has_issues: { 'type': 'boolean', 'const': true },
-		has_wiki: { 'type': 'boolean', 'const': true },
-		license: { 'const': null },
-		web_commit_signoff_required: { 'type': 'boolean', 'const': true },
-		visibility: { 'type': 'string', 'enum': [ 'private', 'internal' ] },
-		delete_branch_on_merge: { 'type': 'boolean', 'const': true },
-		allow_update_branch: { 'type': 'boolean', 'const': true },
-		description: { type: 'string', minLength: 1 },
-		default_branch: { type: 'string', not: { 'const': 'master' } },
-		dependabot: {
-			type: 'object',
-			properties: {
-				enabled: { 'type': 'boolean', 'const': true },
-				paused: { 'type': 'boolean', 'const': false },
-			},
-		},
-		security_and_analysis: {
-			type: 'object',
-			properties: {
-				dependabot_security_updates: {
-					type: 'object',
-					properties: {
-						status: {
-							'type': 'string',
-							'const': 'enabled',
-						},
-					},
-				},
-			},
-		},
-		codeownerErrors: {
-			type: 'object',
-			properties: {
-				status: {
-					type: 'string',
-					not: { 'const': '404' },
-				},
-			},
-		},
-		teams: {
-			type: 'array',
-			minItems: 3,
-			maxItems: 6,
-		},
-		collaborators: {
-			type: 'array',
-			maxItems: 3,
-		},
-		branches: {
-			type: 'array',
-			maxItems: 15,
-		},
-		dependabotAlerts: {
-			type: 'array',
-			maxItems: 5,
-		},
-		topics: {
-			type: 'array',
-			minItems: 1,
-		},
-		secrets: {
-			type: 'array',
-			maxItems: 5,
-		},
-		environments: {
-			type: 'array',
-			minItems: 3,
-			maxItems: 5,
-		},
-	},
-	required: [
-		'has_issues',
-		'has_wiki',
-		'license',
-		'web_commit_signoff_required',
-		'visibility',
-		'delete_branch_on_merge',
-		'allow_update_branch',
-		'description',
-		'default_branch',
-		'dependabot',
-		'security_and_analysis',
-		'codeownerErrors',
-		'teams',
-		'collaborators',
-		'branches',
-		'dependabotAlerts',
-		'secrets',
-		'environments',
-	],
-	additionalProperties: true,
-};
+	const validate = ajv.compile(complianceSchema);
 
-const validate = ajv.compile(schema);
-
-export function assertCompliance(payload) {
 	const ok = validate(payload);
 	let err;
 
