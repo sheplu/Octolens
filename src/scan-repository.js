@@ -179,9 +179,8 @@ const schema = {
 	additionalProperties: true,
 };
 
-const validate = ajv.compile(schema);
-
-export function assertCompliance(payload) {
+export function assertCompliance(payload, customSchema) {
+	const validate = ajv.compile(customSchema || schema);
 	const ok = validate(payload);
 	let err;
 
