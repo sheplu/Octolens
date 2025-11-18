@@ -31,7 +31,7 @@
     "globals": "^16.5.0"
   },
   "dependencies": {
-    "@sheplu/yagi": "^0.100.3",
+    "@sheplu/yagi": "^0.101.0",
     "ajv": "^8.17.1"
   }
 }
