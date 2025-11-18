@@ -1,6 +1,5 @@
 import { listRepositories } from '@sheplu/yagi/src/repositories/repositories.js';
 import { assertCompliance, scanRepository } from './scan-repository.js';
-import { writeFile } from './io-file.js';
 
 export async function scanRepositoriesFromOrganisation(owner) {
 	const repos = await listRepositories(owner);
@@ -8,6 +7,8 @@ export async function scanRepositoriesFromOrganisation(owner) {
 	const computedRepos = [];
 	const reposCount = activeRepos.length;
 	let i = 0;
+
+	console.log(`Total of repositories fetched: ${reposCount}`);
 
 	for (const repo of activeRepos) {
 		const item = await scanRepository(repo.owner.login, repo.name, true);
@@ -17,5 +18,5 @@ export async function scanRepositoriesFromOrganisation(owner) {
 		console.log(`✅ ${++i} / ${reposCount} - ${repo.full_name}`);
 	};
 
-	writeFile('organisation.json', JSON.stringify(computedRepos));
+	return computedRepos;
 };

@@ -3,8 +3,8 @@ import { scanRepositoriesFromOrganisation } from './src/scan-repositories-from-o
 import { writeFile } from './src/io-file.js';
 
 async function main() {
-	const owner = 'my-org';
-	const repository = 'my-repository';
+	const owner = process.env.OWNER || 'owner';
+	const repository = process.env.REPOSITORY || 'repository';
 	const repo = await scanRepository(owner, repository, true);
 	const compliance = assertCompliance(repo);
 
