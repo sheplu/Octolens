@@ -13,9 +13,12 @@ export async function scanRepositoriesFromOrganisation(owner) {
 	for (const repo of activeRepos) {
 		const item = await scanRepository(repo.owner.login, repo.name, true);
 		const compliance = assertCompliance(item);
+		const complianceError = compliance.error ?
+			'⚠️' :
+			'✨';
 
 		computedRepos.push(compliance);
-		console.log(`✅ ${++i} / ${reposCount} - ${repo.full_name}`);
+		console.log(`✅ ${++i} / ${reposCount} - ${repo.full_name} ${complianceError}`);
 	};
 
 	return computedRepos;
