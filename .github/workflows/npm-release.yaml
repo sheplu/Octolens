@@ -9,6 +9,7 @@ jobs:
     environment: prod
     permissions:
       contents: read
+      id-token: write
 
     steps:
       - name: Checkout
@@ -17,21 +18,18 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 24
+          registry-url: https://registry.npmjs.org
 
       - name: NPM install
-        run: npm install
+        run: |
+          npm install
 
       - name: Version
         if: github.event_name == 'release' && github.event.action == 'created'
         run: |
           VERSION=${{ github.event.release.tag_name }}
-          echo "VERSION=${VERSION:1}" >> $GITHUB_ENV
-
-      - name: Version npm
-        if: github.event_name == 'release' && github.event.action == 'created'
-        run: |
+          VERSION=${VERSION:1}
           CURRENT_VERSION=$(npm pkg get version | tr -d '"')
           if [ "$CURRENT_VERSION" != "$VERSION" ]; then
             npm version $VERSION --no-git-tag-version
@@ -40,6 +38,5 @@ jobs:
           fi
 
       - name: publish
-        env:
-          NPM_TOKEN: ${{secrets.NPM_PUBLISH}}
-        run: rm -rf node-module	.editorconfig .github package-lock.json && npm publish --access public
+        run: |
+          npm publish --access public
