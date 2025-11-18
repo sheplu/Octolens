@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 # exported files
 repository.json
 compliance.json
+organisation.json

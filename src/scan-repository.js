@@ -86,6 +86,7 @@ const ajv = new Ajv({
 const schema = {
 	type: 'object',
 	properties: {
+		full_name: { type: 'string' },
 		has_issues: { 'type': 'boolean', 'const': true },
 		has_wiki: { 'type': 'boolean', 'const': true },
 		license: { 'const': null },
