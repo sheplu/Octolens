@@ -14,8 +14,15 @@
     "type": "git",
     "url": "git+https://github.com/sheplu/Octolens.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+		"compliance",
+		"cli",
+		"octolens",
+		"github",
+		"repository",
+		"scanning"
+	],
+  "author": "Jean Burellier",
   "license": "MIT",
   "type": "module",
   "bugs": {
